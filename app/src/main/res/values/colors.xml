@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00b4ff</color>
+    <color name="colorPrimaryDark">#365288</color>
+    <color name="colorAccent">#131c30</color>
+
+    //Material SearchBar Light Theme Colors
+    //Base
+    <color name="searchBarIconColor">#00b4ff</color>
+    <color name="searchBarPrimaryColor">#FFFFFF</color>
+    <color name="searchBarCursorColor">#8000a1ff</color>
+    <color name="searchBarDividerColor">#1F000000</color>
+
+    //Icons
+    <color name="searchBarNavIconTintColor">@color/searchBarIconColor</color>
+    <color name="searchBarMenuIconTintColor">@color/searchBarIconColor</color>
+    <color name="searchBarSearchIconTintColor">@color/searchBarIconColor</color>
+    <color name="searchBarClearIconTintColor">@color/searchBarIconColor</color>
+    <color name="searchBarBackIconTintColor">@color/searchBarIconColor</color>
+
+    //Text
+    <color name="searchBarTextColor">#131c30</color>
+    <color name="searchBarHintColor">#98a5be</color>
+    <color name="searchBarPlaceholderColor">#98a5be</color>
+    <color name="searchBarTextHighlightColor">#8000a1ff</color>
+</resources>
