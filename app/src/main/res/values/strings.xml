@@ -11,4 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="permission_request">Permission Request</string>
     <string name="we_need_to_access_your_current_location_to_use_the_app"><![CDATA[We need to access your current location to use the app >:)]]></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
