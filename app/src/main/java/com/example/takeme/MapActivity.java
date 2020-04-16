@@ -262,6 +262,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                             mapParams.height = 0;
                             locationParams.height = 350;
+
+                            mapFragment.getView().setLayoutParams(mapParams);
+                            locationFrag.getView().setLayoutParams(locationParams);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
