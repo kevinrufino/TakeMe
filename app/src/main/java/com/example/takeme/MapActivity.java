@@ -99,6 +99,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Button getDirection;
     private LatLng currentLocation, gotoLocation;
 
+    LocationFragment locationFrag;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,13 +130,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         materialSearchBar = findViewById(R.id.searchBar);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         //for my location button to be relocated
         mapView = mapFragment.getView();
+
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.locationFragment);
+        if (f instanceof LocationFragment) {
+            locationFrag = (LocationFragment) f;
+        }
 
         //for getDeviceLocation method
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapActivity.this);
@@ -249,6 +256,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, DEFAULT_ZOOM));
                             materialSearchBar.clearSuggestions();
                             materialSearchBar.disableSearch();
+
+                            ViewGroup.LayoutParams mapParams = mapFragment.getView().getLayoutParams();
+                            ViewGroup.LayoutParams locationParams = locationFrag.getView().getLayoutParams();
+
+                            mapParams.height = 0;
+                            locationParams.height = 350;
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -270,6 +283,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 materialSearchBar.clearSuggestions();
             }
         });
+
     }
 
     //called when map is ready and loaded
