@@ -62,8 +62,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -257,33 +259,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             materialSearchBar.clearSuggestions();
                             materialSearchBar.disableSearch();
 
-                            //ConstraintLayout.LayoutParams mapParams = (ConstraintLayout.LayoutParams) mapFragment.getView().getLayoutParams();
+                            // The code that follows makes the LocationFrag show up. 
 
-                            // KABOOM!!!  This line crashes at runtime as it says the parent of the view is a FrameLayout, though I would
-                            // expect it to be a ConstraintLayout. 
-                            ConstraintLayout.LayoutParams locationParams = (ConstraintLayout.LayoutParams) locationFrag.getView().getLayoutParams();
+                            // Note that we need to get the parent view because this thing is a fragment container!
+                            View vp = (View) locationFrag.getView().getParent();
 
-                            //mapParams.verticalWeight = 1;
-                            locationParams.verticalWeight = 0;
+                            // Set this weight to 1 to make LocationFrag show up.  set it to 0 to make it disappear.
+                            ConstraintLayout.LayoutParams locationParams = (ConstraintLayout.LayoutParams) vp.getLayoutParams();
+                            locationParams.verticalWeight = 1;
+                            vp.setLayoutParams(locationParams);
 
-//                            mapFragment.getView().setLayoutParams(mapParams);
-                            locationFrag.getView().setLayoutParams(locationParams);
-
-//                            mapFragment.getView().invalidate();
-//                            mapFragment.getView().requestLayout();
-                            locationFrag.getView().invalidate();
-                            locationFrag.getView().requestLayout();
-
-//                            getSupportFragmentManager()
-//                                    .beginTransaction()
-//                                    .detach(mapFragment)
-//                                    .attach(mapFragment)
-//                                    .commit();
-//                            getSupportFragmentManager()
-//                                    .beginTransaction()
-//                                    .detach(locationFrag)
-//                                    .attach(locationFrag)
-//                                    .commit();
+                            // once you update that weight, tell the entire view to refresh itself.
+                            View coordinatorLayout = findViewById(R.id.topCoordinator);
+                            coordinatorLayout.invalidate();
+                            coordinatorLayout.requestLayout();
 
                         }
                     }
