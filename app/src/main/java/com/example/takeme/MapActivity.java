@@ -265,6 +265,18 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                             mapFragment.getView().setLayoutParams(mapParams);
                             locationFrag.getView().setLayoutParams(locationParams);
+                            
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .detach(mapFragment)
+                                    .attach(mapFragment)
+                                    .commit();
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .detach(locationFrag)
+                                    .attach(locationFrag)
+                                    .commit();
+
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
