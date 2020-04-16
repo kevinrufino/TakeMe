@@ -254,12 +254,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Place place = fetchPlaceResponse.getPlace();
                         Log.i("mytag", "Place found: " + place.getName());
                         LatLng latLngOfPlace = place.getLatLng();
+                        LocationStore.getInstance().setLocation(latLngOfPlace);
                         if (latLngOfPlace != null) {
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, DEFAULT_ZOOM));
                             materialSearchBar.clearSuggestions();
                             materialSearchBar.disableSearch();
 
-                            // The code that follows makes the LocationFrag show up. 
+                            // The code that follows makes the LocationFrag show up.
 
                             // Note that we need to get the parent view because this thing is a fragment container!
                             View vp = (View) locationFrag.getView().getParent();
