@@ -257,25 +257,33 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             materialSearchBar.clearSuggestions();
                             materialSearchBar.disableSearch();
 
-                            ViewGroup.LayoutParams mapParams = mapFragment.getView().getLayoutParams();
-                            ViewGroup.LayoutParams locationParams = locationFrag.getView().getLayoutParams();
+                            //ConstraintLayout.LayoutParams mapParams = (ConstraintLayout.LayoutParams) mapFragment.getView().getLayoutParams();
 
-                            mapParams.height = 0;
-                            locationParams.height = 350;
+                            // KABOOM!!!  This line crashes at runtime as it says the parent of the view is a FrameLayout, though I would
+                            // expect it to be a ConstraintLayout. 
+                            ConstraintLayout.LayoutParams locationParams = (ConstraintLayout.LayoutParams) locationFrag.getView().getLayoutParams();
 
-                            mapFragment.getView().setLayoutParams(mapParams);
+                            //mapParams.verticalWeight = 1;
+                            locationParams.verticalWeight = 0;
+
+//                            mapFragment.getView().setLayoutParams(mapParams);
                             locationFrag.getView().setLayoutParams(locationParams);
-                            
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .detach(mapFragment)
-                                    .attach(mapFragment)
-                                    .commit();
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .detach(locationFrag)
-                                    .attach(locationFrag)
-                                    .commit();
+
+//                            mapFragment.getView().invalidate();
+//                            mapFragment.getView().requestLayout();
+                            locationFrag.getView().invalidate();
+                            locationFrag.getView().requestLayout();
+
+//                            getSupportFragmentManager()
+//                                    .beginTransaction()
+//                                    .detach(mapFragment)
+//                                    .attach(mapFragment)
+//                                    .commit();
+//                            getSupportFragmentManager()
+//                                    .beginTransaction()
+//                                    .detach(locationFrag)
+//                                    .attach(locationFrag)
+//                                    .commit();
 
                         }
                     }
