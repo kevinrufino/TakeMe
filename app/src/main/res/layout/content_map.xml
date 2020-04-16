@@ -10,14 +10,24 @@
 
 
     <androidx.fragment.app.FragmentContainerView
+        android:layout_height="match_parent"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/fragment"
+        app:layout_constraintBottom_toTopOf="@id/locationFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_height="0dp"
+        android:id="@+id/locationFragment"
+        android:name="com.example.takeme.LocationFragment"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintStart_toStartOf="@+id/map"
+        app:layout_constraintTop_toBottomOf="@+id/map" />
 
     <com.mancj.materialsearchbar.MaterialSearchBar
         android:id="@+id/searchBar"
@@ -40,7 +50,7 @@
         app:mt_speechMode="false" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_pin"
@@ -50,15 +60,6 @@
         app:layout_constraintStart_toStartOf="@+id/map"
         app:layout_constraintTop_toTopOf="@+id/map" />
 
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.example.takeme.BlankFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintStart_toStartOf="@+id/map"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

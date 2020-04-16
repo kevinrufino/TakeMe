@@ -1,4 +1,4 @@
-package com.example.takeme;
+package com.example.takeme.directions;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -16,8 +16,8 @@ import java.net.URL;
  */
 
 public class FetchURL extends AsyncTask<String, Void, String> {
-    Context mContext;
-    String directionMode = "walking";
+    private Context mContext;
+    private String directionMode = "walking";
 
     public FetchURL(Context mContext) {
         this.mContext = mContext;
