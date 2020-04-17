@@ -66,6 +66,7 @@ import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -223,7 +224,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if (inputMethodManager != null)
                     inputMethodManager.hideSoftInputFromWindow(materialSearchBar.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 
-                /** FIX ME**/ //we want to take the place id or the latlng for FetchURL
+                //take the place id or the latlng for FetchURL and photosId
                 final String placeId = selectedPrediction.getPlaceId();
                 List<Place.Field> placeFields = Arrays.asList(Place.Field.LAT_LNG);
 
@@ -244,6 +245,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                             // Note that we need to get the parent view because this thing is a fragment container!
                             View vp = (View) locationFrag.getView().getParent();
+
+//                            // places photo?
+//                            ImageView iv = (ImageView)
 
                             // Set this weight to 1 to make LocationFrag show up.  set it to 0 to make it disappear.
                             ConstraintLayout.LayoutParams locationParams = (ConstraintLayout.LayoutParams) vp.getLayoutParams();
