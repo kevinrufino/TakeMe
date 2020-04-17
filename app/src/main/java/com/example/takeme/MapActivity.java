@@ -98,10 +98,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private View mapView;
     private final float DEFAULT_ZOOM = 19;
 
-    //this is for the button on the location fragment
-    private Button getDirection;
-    private LatLng currentLocation, gotoLocation;
-
     LocationFragment locationFrag;
 
     @Override
@@ -109,10 +105,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        //static current location
-        currentLocation = new LatLng(42.9635, -85.8886);
-        //static places location
-        gotoLocation = new LatLng(42.9669, 85.8872);
+//        //static current location
+//        currentLocation = new LatLng(42.9635, -85.8886);
+//        //static places location
+//        gotoLocation = new LatLng(42.9669, 85.8872);
 
         materialSearchBar = findViewById(R.id.searchBar);
 
@@ -235,9 +231,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Place place = fetchPlaceResponse.getPlace();
                         Log.i("mytag", "Place found: " + place.getName());
                         LatLng latLngOfPlace = place.getLatLng();
+                        //sends location to single instance class to be accessed from elsewhere
                         DestinationLocationStore.getInstance().setdLocation(latLngOfPlace);
                         if (latLngOfPlace != null) {
-                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, DEFAULT_ZOOM));
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, 18));
                             materialSearchBar.clearSuggestions();
                             materialSearchBar.disableSearch();
 
@@ -361,6 +358,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new
                                 LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()),
                                 DEFAULT_ZOOM));
+                        //sends location to single instance class to be access from elsewhere
                         CurrentLocationStore.getInstance().setcLocation(new
                                 LatLng(lastKnownLocation.getLatitude(),
                                 lastKnownLocation.getLongitude()));
@@ -381,6 +379,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new
                                         LatLng(lastKnownLocation.getLatitude(),
                                         lastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                                //sends location to single instance class to be access from elsewhere
+                                CurrentLocationStore.getInstance().setcLocation(new
+                                        LatLng(lastKnownLocation.getLatitude(),
+                                        lastKnownLocation.getLongitude()));
                                 fusedLocationProviderClient.removeLocationUpdates(locationCallback);
                             }
                         };
