@@ -3,7 +3,10 @@ package com.example.takeme.directions;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -13,14 +16,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Vishal on 10/20/2018.
  */
 
 public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
-    TaskLoadedCallback taskCallback;
-    String directionMode = "driving";
+    private TaskLoadedCallback taskCallback;
+    private String directionMode = "walking";
 
     public PointsParser(Context mContext, String directionMode) {
         this.taskCallback = (TaskLoadedCallback) mContext;
@@ -53,6 +57,7 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
     }
 
     // Executes in UI thread, after the parsing process
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onPostExecute(List<List<HashMap<String, String>>> result) {
         ArrayList<LatLng> points;
@@ -66,8 +71,8 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
             // Fetching all the points in i-th route
             for (int j = 0; j < path.size(); j++) {
                 HashMap<String, String> point = path.get(j);
-                double lat = Double.parseDouble(point.get("lat"));
-                double lng = Double.parseDouble(point.get("lng"));
+                double lat = Double.parseDouble(Objects.requireNonNull(point.get("lat")));
+                double lng = Double.parseDouble(Objects.requireNonNull(point.get("lng")));
                 LatLng position = new LatLng(lat, lng);
                 points.add(position);
             }
@@ -86,7 +91,6 @@ public class PointsParser extends AsyncTask<String, Integer, List<List<HashMap<S
         // Drawing polyline in the Google Map for the i-th route
         if (lineOptions != null) {
             taskCallback.onTaskDone(lineOptions);
-
         } else {
             Log.d("mylog", "without Polylines drawn");
         }

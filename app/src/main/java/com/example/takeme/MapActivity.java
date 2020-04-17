@@ -103,32 +103,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     LocationFragment locationFrag;
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        /** FIX ME **/ //get current to read our current location
-//        currentLocation = new LatLng(fusedLocationProviderClient.getLastLocation().getResult().getLatitude(),
-//                fusedLocationProviderClient.getLastLocation().getResult().getLongitude());
-
         //static current location
         currentLocation = new LatLng(42.9635, -85.8886);
         //static places location
         gotoLocation = new LatLng(42.9669, 85.8872);
-
-
-//        new FetchURL(MapActivity.this).execute
-//                (getUrl(currentLocation,gotoLocation), "walking");
-//        getDirection = getDirection.findViewById(R.id.directions_button);
-//        getDirection.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                new FetchURL(MapActivity.this).execute
-//                        (getUrl(currentLocation,gotoLocation), "walking");
-//            }
-//        });
 
         materialSearchBar = findViewById(R.id.searchBar);
 
@@ -147,9 +130,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         //for getDeviceLocation method
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(MapActivity.this);
-
-        new FetchURL(MapActivity.this).execute(getUrl(currentLocation,
-                gotoLocation), "walking");
 
         //places api and autofill
         Places.initialize(MapActivity.this, Constants.GOOGLE_MAPS_APIKEY);
@@ -254,7 +234,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Place place = fetchPlaceResponse.getPlace();
                         Log.i("mytag", "Place found: " + place.getName());
                         LatLng latLngOfPlace = place.getLatLng();
-                        LocationStore.getInstance().setLocation(latLngOfPlace);
+                        DestinationLocationStore.getInstance().setdLocation(latLngOfPlace);
                         if (latLngOfPlace != null) {
                             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOfPlace, DEFAULT_ZOOM));
                             materialSearchBar.clearSuggestions();
@@ -306,19 +286,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.googleMap.setMyLocationEnabled(true);
         this.googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
-
-//        /** FIX ME **/ // mapView is never true
-//        if(mapView != null && mapView.findViewById(Integer.parseInt("1")) != null){
-//            View myLocationButton = ((View) mapView.findViewById(Integer.parseInt("1"))
-//                    .getParent()).findViewById(Integer.parseInt("2"));
-//            //fetches layout parameters
-//            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) myLocationButton.getLayoutParams();
-//
-//            //sets location properties for button
-//            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-//            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-//            layoutParams.setMargins(0, 0, 40, 180);
-//        }
 
         //this sets the current location to clear all search bar
         googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
@@ -378,8 +345,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-    /** FIX ME Get current location**/
-    private void getDeviceLocation() {
+    public void getDeviceLocation() {
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -391,6 +357,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new
                                 LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()),
                                 DEFAULT_ZOOM));
+                        CurrentLocationStore.getInstance().setcLocation(new
+                                LatLng(lastKnownLocation.getLatitude(),
+                                lastKnownLocation.getLongitude()));
                     } else {
                         //check if last location and fused location is null
                         final LocationRequest locRequest = LocationRequest.create();
@@ -426,22 +395,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    private String getUrl(LatLng cl, LatLng dest) {
-        // current location
-        String str_origin = "origin=" + cl.latitude + "," + cl.longitude;
-        // goto location
-        String str_dest = "destination=place_id:ChIJNY9oTuKiGYgROn64oGsb9zI"; //dest.latitude + "," + dest.longitude;
-        // Mode
-        String mode = "mode=" + "walking";
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + mode;
-        // Output format
-        String output = "json";
-        // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + Constants.GOOGLE_MAPS_APIKEY;
-        return url;
-    }
-
     @Override
     public void onTaskDone(Object... values) {
         if (currentPolyline != null)
@@ -449,69 +402,4 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         currentPolyline = googleMap.addPolyline((PolylineOptions) values[0]);
     }
 
-//    /**
-//     * A simple {@link Fragment} subclass.
-//     * Use the {@link LocationFragment#newInstance} factory method to
-//     * create an instance of this fragment.
-//     */
-//    public static class LocationFragment extends Fragment {
-//        // TODO: Rename parameter arguments, choose names that match
-//        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//        private static final String ARG_PARAM1 = "param1";
-//        private static final String ARG_PARAM2 = "param2";
-//
-//        /**
-//         //set <FRAGMENT/>: android:layout_height = "350dp"
-//         //set <MAP/>: android:layout_height = "0dp"
-//         //take Place Photos and set it to imageview
-//         //take Places latlng and set up button to draw route
-//         **/
-//
-//        //this is for the button on the location fragment
-//        private Button getDirection;
-//        private LatLng currentLocation, gotoLocation;
-//
-//
-//        public LocationFragment() {
-//            // Required empty public constructor
-//        }
-//
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param currentLocation current location of device.
-//         * @param gotoLocation location we want directions to.
-//         * @return A new instance of fragment BlankFragment.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        LocationFragment newInstance(LatLng currentLocation, LatLng gotoLocation) {
-//            LocationFragment fragment = new LocationFragment();
-//            Bundle args = new Bundle();
-////        args.putString(ARG_PARAM1, param1);
-////        args.putString(ARG_PARAM2, param2);
-////        fragment.setArguments(args);
-//            return fragment;
-//        }
-//
-//        @Override
-//        public void onCreate(Bundle savedInstanceState) {
-//            super.onCreate(savedInstanceState);
-////        if (getArguments() != null) {
-////            mParam1 = getArguments().getString(ARG_PARAM1);
-////            mParam2 = getArguments().getString(ARG_PARAM2);
-////        }
-////         get
-//
-//        }
-//
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//            // Inflate the layout for this fragment
-//            return inflater.inflate(R.layout.location_fragment, container, false);
-//        }
-//
-//    }
 }
